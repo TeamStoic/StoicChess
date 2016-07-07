@@ -11,10 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160706205302) do
+ActiveRecord::Schema.define(version: 20160706210426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bishops", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "kings", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "knights", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pawns", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "pieces", force: true do |t|
     t.string   "color"
@@ -25,6 +45,16 @@ ActiveRecord::Schema.define(version: 20160706205302) do
     t.integer  "player_id"
     t.boolean  "captured"
     t.boolean  "checkmate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "queens", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "rooks", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
