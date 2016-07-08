@@ -1,2 +1,3 @@
 class Rook < Piece
+  
 end

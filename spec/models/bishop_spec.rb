@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Bishop, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+    # it "should allow a bishop to be created" do
+    #   bishop = Bishop.create!(type: "bishop", color: "black")
+
+    #   expect(bishop).to eq([bishop, black])
+    # end
 end

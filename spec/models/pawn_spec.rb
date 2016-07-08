@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Pawn, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+    # it "should allow a pawn to be created" do
+    #   pawn = Pawn.create!(type: "pawn", color: "black")
+
+    #   expect(pawn).to eq([pawn, black])
+    # end
 end

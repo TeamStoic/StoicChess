@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Queen, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+    # it "should allow a queen to be created" do
+    #   queen = Queen.create!(type: "queen", color: "black")
+
+    #   expect(queen).to eq([queen, black])
+    # end
 end
