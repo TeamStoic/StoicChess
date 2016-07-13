@@ -14,3 +14,4 @@
 ..[LinkedIn](https://uk.linkedin.com/in/aleks-gorbenko-web-developer)
 
 * Ethan He - ethanhe1992@gmail.com
+* George Fourikis - https://github.com/GeorgeFourikis - georgefourikis@hotmail.gr
