@@ -32,17 +32,17 @@
                 <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
                   <div class="form-inline">
                     <div class="form-group">  
-                      <%= f.input :email, class: 'form-control', required: false, autofocus: true %>
+                      <%= f.email_field :email, class: 'form-control', required: false, autofocus: true, placeholder:'Email Address' %>
                     </div>
                     <div class="form-group">
-                      <%= f.input :password, class: 'form-control', required: false %>
+                      <%= f.password_field :password, class: 'form-control', required: false, placeholder: 'Password' %>
                     </div>
                     <div class="form-group">
-                      <%= f.button :submit, "LOG IN", class: "btn btn-success form-control" %>
+                      <%= f.button :submit, "Log In", class: 'btn btn-success form-control' %>
                     </div>
                   </div>
                   <div class="form-inline">
-                    <div class="checkbox navbar-checkbox">
+                    <div class="checkbox">
                       <label>
                         <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
                       </label>
@@ -64,9 +64,9 @@
       <div class="col-xs-6 text-center">
         <ul class="footer-links">
           <% if user_signed_in? %>
-            <li><%= link_to 'HOME', root_path %></li>
-            <li><%= link_to 'MY PROFILE', root_path %></li>
-            <li><%= link_to 'SIGN OUT', destroy_user_session_path, method: :delete %></li>
+            <li><%= link_to 'Home', root_path %></li>
+            <li><%= link_to 'My Profile', root_path %></li>
+            <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
           <% else %>
             <li><%= link_to 'Home', root_path %></li>
             <li><%= link_to 'Sign In', new_user_session_path %></li>
