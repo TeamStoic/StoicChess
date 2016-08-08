@@ -1,0 +1,182 @@
+<div class="container-fluid">
+  <section id="register">
+    <div class= "row">
+      <div class="col-sm-5 col-sm-offset-1">
+        <%= image_tag 'chess.jpg', class: 'img-responsive feature-pic' %>
+      </div>
+      <div class="col-sm-3 col-sm-offset-1 new-account">
+      <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= f.error_notification %>
+        <div class="form-group">
+          <%= f.email_field :email, class: 'form-control', required: true, autofocus: true, placeholder: 'Email Address' %>
+        </div>
+        <br />
+        <div class="form-group">
+          <%= f.password_field :password, class: 'form-control', required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), placeholder: 'Password' %>
+        </div>
+        <br />
+        <div class="form-group">
+          <%= f.password_field :password_confirmation, class: 'form-control', required: true, placeholder: 'Confirm Password' %>
+        </div>
+        <br />
+        <div class="form-group">
+          <%= f.button :submit, "Create An Account", class: "btn btn-success form-control" %>
+        </div>
+      <% end %>
+      </div>
+    </div>
+  </section>
+  <hr />
+  <section id="features">
+    <div class="row">
+      <div class="col-sm-offset-2 col-sm-8 text-center">
+        <h2>CHESS APP - FINAL PROJECT</h2>
+        <h4>Description of the project and fact that it is our final project for FHP</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-2 col-sm-2 col-xs-offset-2 col-xs-8 text-center"/>
+        <%= image_tag 'chess.jpg', class: 'img-responsive feature-pic' %>
+        <h3>Feature 1</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula leo, auctor non tincidunt sit amet, elementum vel dolor. Praesent convallis turpis et justo convallis, a rhoncus quam volutpat.</p>
+      </div>
+      <div class="col-sm-offset-1 col-sm-2 col-xs-offset-2 col-xs-8 text-center"/>
+        <%= image_tag 'chess.jpg', class: 'img-responsive feature-pic' %>
+        <h3>Feature 2</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula leo, auctor non tincidunt sit amet, elementum vel dolor. Praesent convallis turpis et justo convallis, a rhoncus quam volutpat.</p>
+      </div>
+      <div class="col-sm-offset-1 col-sm-2 col-xs-offset-2 col-xs-8 text-center"/>
+        <%= image_tag 'chess.jpg', class: 'img-responsive feature-pic' %>
+        <h3>Feature 3</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula leo, auctor non tincidunt sit amet, elementum vel dolor. Praesent convallis turpis et justo convallis, a rhoncus quam volutpat.</p>
+      </div>
+    </div>
+  </section>
+  <hr />
+  <section id="team">
+    <div class="row">
+      <div class="text-center">
+        <h2>THE TEAM</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-1 col-xs-offset-2 col-xs-8">
+        <%= image_tag 'chad.png', class: 'img-responsive team-profile' %>
+        <h5 class="text-center">Chad</h5>
+          <div class="text-center">
+          <%= image_tag 'linked_in.png' %> &emsp;
+          <%= link_to 'https://github.com/chadbaum' do %>
+            <%= image_tag 'github.png' %>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-sm-2 col-sm-offset-0 col-xs-offset-2 col-xs-8">
+        <%= image_tag 'ethan.png', class: 'img-responsive team-profile' %>
+        <h5 class="text-center">Ethan</h5>
+        <div class="text-center">
+          <%= link_to 'https://www.linkedin.com/in/ethan-he-640082124' do %>
+            <%= image_tag 'linked_in.png' %> &emsp;
+          <% end %>
+          <%= link_to 'https://github.com/Se7enB2st' do %>
+            <%= image_tag 'github.png' %>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-sm-2 col-sm-offset-0 col-xs-offset-2 col-xs-8"/>
+        <%= image_tag 'zach.png', class: 'img-responsive team-profile' %>
+        <h5 class="text-center">Zach</h5>
+        <div class="text-center">
+          <%= link_to 'https://www.linkedin.com/in/ZachBDev' do %>
+            <%= image_tag 'linked_in.png' %> &emsp;
+          <% end %>
+          <%= link_to 'https://github.com/ZachBerman' do %>
+            <%= image_tag 'github.png' %>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-sm-2 col-sm-offset-0 col-xs-offset-2 col-xs-8"/>
+        <%= image_tag 'george.png', class: 'img-responsive team-profile' %>
+        <h5 class="text-center">George</h5> 
+        <div class="text-center">
+          <%= image_tag 'linked_in.png' %> &emsp;
+          <%= link_to 'https://github.com/GeorgeFourikis' do %> 
+            <%= image_tag 'github.png' %>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-sm-2 col-sm-offset-0 col-xs-offset-2 col-xs-8"/>
+        <%= image_tag 'aleks.png', class: 'img-responsive team-profile' %>
+        <h5 class="text-center">Aleks</h5> 
+        <div class="text-center">
+          <%= image_tag 'linked_in.png' %> &emsp;
+          <%= link_to 'https://github.com/aleksgorbenko' do %> 
+            <%= image_tag 'github.png' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <h3 class="text-center">Led by the Jedi Master</h3>
+    <div class="row">
+      <div class="col-sm-offset-5 col-sm-2 col-xs-8 col-xs-offset-2">
+        <%= image_tag 'yoda.jpg', class: 'img-responsive feature-pic' %>
+        <h5 class="text-center">Dave</h5>
+        <div class="text-center">
+          <%= link_to 'https://www.linkedin.com/in/dave-lasley-a0103abb' do %> 
+            <%= image_tag 'linked_in.png' %> &emsp;
+          <% end %>
+          <%= link_to 'https://github.com/lasley' do %>
+            <%= image_tag 'github.png' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+  <hr />
+  <section id="team">
+      <h2 class="text-center">TECHNOLOGIES USED...</h2>
+    <div class="row">  
+      <div class="col-sm-offset-3 col-sm-1">
+        <%= image_tag 'ruby.png', class: 'img-responsive center-block' %>
+      </div>
+      <div class="col-sm-1">
+        <%= image_tag 'rails.png', class: 'img-responsive center-block' %>
+      </div>
+      <div class="col-sm-1">
+        <%= image_tag 'jquery.png', class: 'img-responsive center-block' %>
+      </div>
+      <div class="col-sm-1">
+        <%= image_tag 'html5.png', class: 'img-responsive center-block' %>
+      </div>
+      <div class="col-sm-1">
+        <%= image_tag 'css3.png', class: 'img-responsive center-block' %>
+      </div>
+      <div class="col-sm-1">
+        <%= image_tag 'gitbig.png', class: 'img-responsive center-block' %>
+      </div>
+    </div>
+    <hr />
+  </section>
+  <section id="solutions">
+    <div class="row">
+      <div class="col-sm-offset-2 col-sm-8 text-center">
+        <h2>SOLUTIONS APPLIED</h2>
+        <h4>Simple solutions for complex problems...</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-offset-2 col-sm-2 col-xs-offset-2 col-xs-8 text-center"/>
+        <h3>Stuff</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula leo, auctor non tincidunt sit amet, elementum vel dolor.</p>
+      </div>
+      <div class="col-sm-offset-1 col-sm-2 col-xs-offset-2 col-xs-8 text-center"/>
+        <h3>Things</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula leo, auctor non tincidunt sit amet, elementum vel dolor.</p>
+      </div>
+      <div class="col-sm-offset-1 col-sm-2 col-xs-offset-2 col-xs-8 text-center"/>
+        <h3>Stuff</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula leo, auctor non tincidunt sit amet, elementum vel dolor.</p>
+      </div>
+    </div>
+  </section>
+</div>
+  

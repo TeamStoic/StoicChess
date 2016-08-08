@@ -25,17 +25,17 @@ ActiveRecord::Schema.define(version: 20160806192848) do
   end
 
   create_table "pieces", force: :cascade do |t|
-    t.string   "color"
-    t.string   "type"
+    t.string   "color",      limit: 255
+    t.string   "type",       limit: 255
     t.integer  "x_position"
     t.integer  "y_position"
     t.integer  "game_id"
     t.integer  "player_id"
-    t.boolean  "captured",   default: false
-    t.boolean  "checkmate",  default: false
+    t.boolean  "captured",               default: false
+    t.boolean  "checkmate",              default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "moved",      default: false
+    t.boolean  "moved",                  default: false
   end
 
   create_table "players", force: :cascade do |t|

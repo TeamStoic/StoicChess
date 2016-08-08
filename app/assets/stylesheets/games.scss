@@ -1,0 +1,40 @@
+// Place all the styles related to the games controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#games-list {
+  padding-top: 20px;
+}
+
+#profile {
+  padding-bottom: 30px;
+}
+
+.join-headline {
+  padding-bottom: 20px;
+  margin-top: 0px;
+}
+
+.stats {
+  padding-top: 20px;
+}
+
+.boxed {
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+          box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+.boxed h4 {
+  padding-left: 25px;
+  padding-bottom: 26px;
+}
+
+.boxed .top {
+  padding-top: 25px;
+}
