@@ -9,4 +9,7 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-StoicChess::Application.config.secret_key_base = 'b02af4ed78836e0a007c890e7f38df540669ad77d076cffe3899647bfbfd000e5e5080fc5841fff22763a5ce871d3f4f077b4c2693f964cdd67c0da25d6fad29'
+StoicChess::Application.config.secret_key_base =
+'b02af4ed78836e0a007c890e7f38df540669ad77d076cff
+e3899647bfbfd000e5e5080fc5841fff22763a5ce871d3f4
+f077b4c2693f964cdd67c0da25d6fad29'

@@ -36,4 +36,5 @@ Contributors
 
 * [Aleks Gorbenko](mailto:aleksedgorbenko@gmail.com) | [GitHub](https://github.com/aleksgorbenko) | [LinkedIn](https://uk.linkedin.com/in/aleks-gorbenko-web-developer) | [Portfolio](https://aleksgorbenko.github.io/) | [Blog](https://aleksgorbenko.com)
 
-* [Ethan He](mailto:ethanhe.dev@gmail.com) | [GitHub](https://github.com/Se7enB2st)
+* [Ethan He](mailto:ethanhe.dev@gmail.com) | [GitHub](https://github.com/Se7enB2st) |
+[LinkedIn](https://www.linkedin.com/in/ethan-he)

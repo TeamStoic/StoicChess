@@ -8,12 +8,17 @@ class Game < ActiveRecord::Base
   after_save :create_players!
 
   def populate!
+    first_turn!
     populate_left_black_half!
     populate_right_black_half!
     populate_black_pawns!
     populate_white_pawns!
     populate_left_white_half!
     populate_right_white_half!
+  end
+
+  def end_turn!
+    increment!(:turn)
   end
 
   def check?(color)
@@ -95,5 +100,9 @@ class Game < ActiveRecord::Base
       black.pieces.create(type: type, x_position: x_pos, y_position: y_pos,
                           color: 'black', game_id: id)
     end
+  end
+
+  def first_turn!
+    update(turn: 1)
   end
 end

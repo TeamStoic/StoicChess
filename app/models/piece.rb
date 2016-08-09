@@ -24,12 +24,20 @@ class Piece < ActiveRecord::Base
       return false unless enemy?(victim)
       capture!(victim)
     end
-    update(x_position: x, y_position: y, moved: true)
+    update(x_position: x, y_position: y, moved: true,
+           turn_last_moved: game.turn)
+    game.end_turn!
     # if checked_king(white_king)
     # elsif checked_king(black_king)
     # end
-
     true
+  end
+
+  # Compares a piece's y_position with the
+  # coordinate provided and returns the
+  # distance between the two.
+  def y_distance(new_y_coordinate)
+    (y_position - new_y_coordinate).abs
   end
 
   # All validation assumes white player is on the
@@ -59,13 +67,6 @@ class Piece < ActiveRecord::Base
   # distance between the two.
   def x_distance(new_x_coordinate)
     (x_position - new_x_coordinate).abs
-  end
-
-  # Compares a piece's y_position with the
-  # coordinate provided and returns the
-  # distance between the two.
-  def y_distance(new_y_coordinate)
-    (y_position - new_y_coordinate).abs
   end
 
   # Returns true if the coordinates provided
