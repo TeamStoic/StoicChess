@@ -59,6 +59,7 @@ RSpec.describe GamesController, type: :controller do
       expect(wht_pawn.y_position).to eq(5)
     end
     it 'should update Black Knight if move coords are valid' do
+      wht_pawn.move!(7, 5)
       patch :update, params: { id: game.id, piece_id: blk_knight.id,\
                                x_position: 0, y_position: 2 }
 

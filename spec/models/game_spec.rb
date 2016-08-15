@@ -1,5 +1,4 @@
 require 'rails_helper'
-
 RSpec.describe Game, type: :model do
   describe 'populate the board' do
     let(:game) { FactoryGirl.create(:game, :populated) }
@@ -19,10 +18,16 @@ RSpec.describe Game, type: :model do
     it 'should give me the last pieces color' do
       expect(game.pieces.last.color).to eq 'white'
     end
+    it 'should show game color as white' do
+      expect(game.color).to eq 'white'
+    end
+    it 'should show game turn number as 1' do
+      expect(game.turn).to eq 1
+    end
   end
 
   describe 'check?' do
-    let(:empty_game) { FactoryGirl.create(:game) }
+    let(:empty_game) { FactoryGirl.create(:game, color: 'white', turn: 1) }
     let(:blk_king) do
       empty_game.pieces.create(
         type: 'King',
@@ -57,35 +62,56 @@ RSpec.describe Game, type: :model do
       expect(blk_king.y_position).to eq 4
       expect(empty_game.check?(blk_king.color)).to eq true
     end
+
     it 'should return true if King is under check vertically' do
       expect(queen.move!(3, 7)).to eq true
       expect(blk_king.x_position).to eq 3
       expect(blk_king.y_position).to eq 4
       expect(empty_game.check?(blk_king.color)).to eq true
     end
+
     it 'should return true if King is under check diagonally' do
       expect(queen.move!(1, 2)).to eq true
       expect(blk_king.x_position).to eq 3
       expect(blk_king.y_position).to eq 4
       expect(empty_game.check?(blk_king.color)).to eq true
     end
+
     it 'should return true if King is under check in L-shape move' do
       expect(knight.move!(5, 5)).to eq true
       expect(blk_king.x_position).to eq 3
       expect(blk_king.y_position).to eq 4
       expect(empty_game.check?(blk_king.color)).to eq true
     end
+
     it 'should return false if King is not under check' do
       expect(queen.move!(1, 3)).to eq true
       expect(blk_king.x_position).to eq 3
       expect(blk_king.y_position).to eq 4
       expect(empty_game.check?(blk_king.color)).to eq false
     end
+
     it 'should return false if King is not under check in L-shape move' do
       expect(knight.move!(7, 5)).to eq true
       expect(blk_king.x_position).to eq 3
       expect(blk_king.y_position).to eq 4
       expect(empty_game.check?(blk_king.color)).to eq false
+    end
+  end
+
+  describe 'end_turn!' do
+    let(:game) { FactoryGirl.create(:game, :populated) }
+
+    it 'should increment game turn by 1' do
+      game.end_turn!(game.color)
+
+      expect(game.turn).to eq 2
+    end
+
+    it 'should alternate game color' do
+      game.end_turn!(game.color)
+
+      expect(game.color).to eq 'black'
     end
   end
 end

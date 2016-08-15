@@ -11,13 +11,15 @@ class Piece < ActiveRecord::Base
   LEFT = -1
   DOWN = 1
   UP = -1
-  # Returns true and upates the piece's coordinates and moved
+
+  # Returns true and updates the piece's coordinates and moved
   # flag on a valid move where the tile is either empty or
   # occupied by an enemy piece.  Executes capture method
   # on enemy occupying piece.  Otherwise returns false
   # and no further changes are made.
+  # At the end of successful move!, end player's turn.
   def move!(x, y)
-    return false unless valid_move?(x, y)
+    return false unless game.color == color && valid_move?(x, y)
     victim = occupant_piece(x, y)
     if victim
       return false unless enemy?(victim)
@@ -25,6 +27,7 @@ class Piece < ActiveRecord::Base
     end
     return false if check_state(x, y, color)
     update(x_position: x, y_position: y, moved: true)
+    game.end_turn!(color)
     true
   end
 

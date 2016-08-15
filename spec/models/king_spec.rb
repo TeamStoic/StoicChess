@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe King, type: :model do
   let(:game) { FactoryGirl.create(:game, :populated) }
-  let(:empty_game) { FactoryGirl.create(:game) }
+  let(:empty_game) { FactoryGirl.create(:game, color: 'black', turn: 2) }
   let(:king) do
     game.pieces.find_by(
       type: 'King',
@@ -42,6 +42,7 @@ RSpec.describe King, type: :model do
   describe 'creation' do
     it 'should create a white king' do
       king = FactoryGirl.create(:king, color: 'white')
+
       expect(king.type).to eq('King')
     end
 

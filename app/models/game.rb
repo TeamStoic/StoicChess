@@ -8,6 +8,7 @@ class Game < ActiveRecord::Base
   after_save :create_players!
 
   def populate!
+    first_turn!
     populate_left_black_half!
     populate_right_black_half!
     populate_black_pawns!
@@ -37,12 +38,26 @@ class Game < ActiveRecord::Base
     players.find_by(color: 'black')
   end
 
+  # At the end of turn
+  # Alternate the color between white and black (first turn color is white)
+  # Increment turn number by 1
+  def end_turn!(color)
+    next_turn_color = color == 'white' ? 'black' : 'white'
+    update(color: next_turn_color)
+    increment!(:turn)
+  end
+
   private
+
+  # At first turn set turn to 1 and color to white
+  def first_turn!
+    update(turn: 1, color: 'white')
+  end
 
   def create_players!
     players.create(color: 'white')
     players.create(color: 'black')
-  end\
+  end
 
   def populate_left_black_half!
     create_piece('Rook', 'black', 0, 0)

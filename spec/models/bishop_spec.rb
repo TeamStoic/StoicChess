@@ -1,5 +1,4 @@
 require 'rails_helper'
-
 RSpec.describe Bishop, type: :model do
   let(:game) { FactoryGirl.create(:game, :populated) }
   let(:bishop) do
@@ -23,6 +22,7 @@ RSpec.describe Bishop, type: :model do
   describe 'creation validation' do
     it 'should create a white bishop' do
       bishop = FactoryGirl.create(:bishop, color: 'white')
+
       expect(bishop.type).to eq('Bishop')
     end
 
