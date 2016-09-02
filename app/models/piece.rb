@@ -2,7 +2,6 @@
 class Piece < ActiveRecord::Base
   belongs_to :game
   belongs_to :player
-
   validates :color, inclusion: { in: %w(black white) }
   validates :type, inclusion: { in: %w(Pawn Rook Bishop Knight King Queen) }
 
@@ -24,12 +23,27 @@ class Piece < ActiveRecord::Base
       return false unless enemy?(victim)
       capture!(victim)
     end
+    return false if check_state(x, y, color)
     update(x_position: x, y_position: y, moved: true)
-    # if checked_king(white_king)
-    # elsif checked_king(black_king)
-    # end
-
     true
+  end
+
+  def checkmate?(x, y, color)
+    if game.checkmate_coords(x, y).all? do |c|
+         check_state(c[0], c[1], color)
+       end
+      return true
+    end
+    false
+  end
+
+  def check_state(x, y, color)
+    old_x = x_position
+    old_y = y_position
+    update(x_position: x, y_position: y)
+    result = game.in_check?(color)
+    update(x_position: old_x, y_position: old_y)
+    result
   end
 
   # All validation assumes white player is on the
@@ -69,24 +83,21 @@ class Piece < ActiveRecord::Base
   end
 
   # Returns true if the coordinates provided
-  # are different from the piece's starting
-  # position.
+  # are different from the piece's starting position.
   def moved?(x, y)
     x != x_position || y != y_position
   end
 
-  # Returns true if the coordinates provided
-  # have the same x-axis value and there are no
-  # pieces in between.
+  # Returns true if the coordinates provided have the
+  # same x-axis value and there are no pieces in between.
   def clear_horizontal_move?(x, y)
     return false unless y_distance(y) == 0
     distance = x_distance(x)
     path_clear?(x, y, distance)
   end
 
-  # Returns true if the coordinates provided
-  # have the same y-axis value and there are no
-  # pieces in between.
+  # Returns true if the coordinates provided have
+  # the same y-axis value and there are no pieces in between.
   def clear_vertical_move?(x, y)
     return false unless x_distance(x) == 0
     distance = y_distance(y)
@@ -94,9 +105,8 @@ class Piece < ActiveRecord::Base
   end
 
   # Returns true if the coordinates provided
-  # are the same distance away from the
-  # origin point along both axis and there are no
-  # pieces in between.
+  # are the same distance away from the origin point along
+  # both axis and there are no pieces in between.
   def clear_diagonal_move?(x, y)
     return false unless x_distance(x) == y_distance(y)
     distance = x_distance(x)
@@ -127,24 +137,19 @@ class Piece < ActiveRecord::Base
     direction = path_direction(x, y)
     (distance - 1).times do |i|
       i += 1
-      coordinate_sets << [
-        x_position + i * direction[:x],
-        y_position + i * direction[:y]
-      ]
+      coordinate_sets << [x_position + i * direction[:x],
+                          y_position + i * direction[:y]]
     end
     coordinate_sets
   end
 
-  # Returns true if no x-y coordinate pairs
-  # between origin and destination have a piece
-  # present.
+  # Returns true if no x-y coordinate pairs between
+  # origin and destination have a piece present.
   def path_clear?(x, y, distance)
     coordinates = generate_path_coordinates(x, y, distance)
-    coordinates.each do |coordinate|
-      return false if game.pieces.exists?(
-        x_position: coordinate[0],
-        y_position: coordinate[1]
-      )
+    coordinates.each do |coord|
+      return false if game.pieces.exists?(x_position: coord[0],\
+                                          y_position: coord[1])
     end
     true
   end

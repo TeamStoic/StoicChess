@@ -15,7 +15,13 @@ class GamesController < ApplicationController
   end
 
   def show
+    @game = Game.find(params[:id])
     @piece_positions = Game.find(params[:id]).pieces
+    if @game.in_check?('black')
+      flash[:black_check] = 'Black King is under the Check!'
+    elsif @game.in_check?('white')
+      flash[:white_check] = 'White King is under the Check!'
+    end
   end
 
   def update

@@ -7,16 +7,15 @@
         <h4>Member Since: <%= current_user.created_at.strftime("%B %d, %Y") %></h4>
         <a class="btn-block btn btn-info account-settings" href="#" role="button">Account Settings</a>
       </div>
-      <div class="boxed col-sm-8 col-xs-10 col-sm-offset-0 col-xs-offset-1">
+      <div class="boxed col-sm-7 col-xs-10 col-xs-offset-1">
         <h2 class="text-center">Hello There!</h2>
         <div class="col-sm-offset-1">
-        <h3><b>Your Statistics</b></h3>
-        <br />
-        <h4>Games Played: <%= current_user.games.count %></h4> 
-        <h4>Wins</h4>
-        <h4>Losses</h4>
-        <h4>Draws</h4>
-        <h3><b>Historical Battles</b></h3>
+          <h3 class="user-stats"><strong>Your Statistics</strong></h3>
+        <p>Games Played: <%= current_user.games.count %></p> 
+        <p>Wins</p>
+        <p>Losses</p>
+        <p></picture>Draws</h4>
+        <h3 class="battles"><strong>Historical Battles</strong></h3>
         </div>
       </div>
     </div>
