@@ -40,6 +40,14 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def white
+    players.find_by(color: 'white')
+  end
+
+  def black
+    players.find_by(color: 'black')
+  end
+
   private
 
   # Generates all avilable coords around the current
@@ -98,14 +106,6 @@ class Game < ActiveRecord::Base
     create_piece('Bishop', 'white', 5, 7)
     create_piece('Knight', 'white', 6, 7)
     create_piece('Rook', 'white', 7, 7)
-  end
-
-  def white
-    players.find_by(color: 'white')
-  end
-
-  def black
-    players.find_by(color: 'black')
   end
 
   def create_piece(type, color, x_pos, y_pos)

@@ -4,7 +4,7 @@
       <div class="col-sm-5 col-sm-offset-1">
         <%= image_tag 'chess.jpg', class: 'img-responsive feature-pic' %>
       </div>
-      <div class="col-sm-5">
+      <div class="available-games col-sm-5">
         <h2 class="join-headline text-center">Your opponent awaits you! Join the battle!</h2>
           <% @games.each do |game| %>
             <h4>Available game<%= button_to "Join game!", join_game_path(game), class: "btn btn-success pull-right" %></h4>
