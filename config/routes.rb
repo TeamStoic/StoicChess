@@ -3,7 +3,12 @@ StoicChess::Application.routes.draw do
   root 'static_pages#index'
 
   resources :games
+
+  post 'games/:id', to: 'games#join', as: :join_game
+  resources :players, only: [:show]
+
   resources :users, only: [:show]
+
 
 
   # The priority is based upon order of creation: first created ->

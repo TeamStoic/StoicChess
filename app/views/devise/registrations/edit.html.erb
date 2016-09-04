@@ -3,13 +3,14 @@
   <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
     <%= f.error_notification %>
     <div class="form-inputs">
-      <%= f.input :email, required: true, autofocus: true %>
+      <%= f.email_field :email, required: true, autofocus: true, class:'devise-inputs', placeholder: 'Email Address' %>
+      <%= f.text_field :username, required: true, autofocus: true, class:'devise-inputs', placeholder: 'Username' %>
       <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
         <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
       <% end %>
-      <%= f.input :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false %>
-      <%= f.input :password_confirmation, required: false %>
-      <%= f.input :current_password, hint: "we need your current password to confirm your changes", required: true %>
+      <%= f.password_field :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false, placeholder: 'New Password', class:'devise-inputs' %>
+      <%= f.password_field :password_confirmation, required: false, class:'devise-inputs', placeholder:'Confirm New Password' %>
+      <%= f.password_field :current_password, hint: "we need your current password to confirm your changes", required: true, class:'devise-inputs', placeholder:'Current Password' %>
     </div>
     <div class="form-actions">
       <%= f.button :submit, "Update", class: 'btn btn-success' %>

@@ -3,7 +3,7 @@
     <div class="row">
       <div class="user col-sm-offset-1 col-sm-2">
         <%= image_tag 'user.png', class:'img-responsive' %>
-        <h4><%= current_user.email %></h4>
+        <h4><%= current_user.username %></h4>
         <h4>Member Since: <%= current_user.created_at.strftime("%B %d, %Y") %></h4>
         <a class="btn-block btn btn-info account-settings" href="#" role="button">Account Settings</a>
       </div>

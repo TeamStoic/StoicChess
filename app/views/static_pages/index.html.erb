@@ -10,15 +10,19 @@
         <div class="form-group">
           <%= f.email_field :email, class: 'form-control', required: true, autofocus: true, placeholder: 'Email Address' %>
         </div>
-        <br />
+        <br>
+        <div class="form-group">
+          <%= f.text_field :username, required: true, autofocus: true, class:'form-control', placeholder: 'Username' %>
+        </div>
+        <br>
         <div class="form-group">
           <%= f.password_field :password, class: 'form-control', required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), placeholder: 'Password' %>
         </div>
-        <br />
+        <br>
         <div class="form-group">
           <%= f.password_field :password_confirmation, class: 'form-control', required: true, placeholder: 'Confirm Password' %>
         </div>
-        <br />
+        <br>
         <div class="form-group">
           <%= f.button :submit, "Create An Account", class: "btn btn-success form-control" %>
         </div>
