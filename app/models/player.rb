@@ -6,6 +6,14 @@ class Player < ApplicationRecord
 
   validates :color, inclusion: { in: %w(black white) }
 
+  def enemy
+    color == 'white' ? game.black : game.white
+  end
+
+  def enemy_pieces
+    enemy.pieces.select { |piece| piece.captured != true }
+  end
+
   def king
     piece_lookup('King')
   end

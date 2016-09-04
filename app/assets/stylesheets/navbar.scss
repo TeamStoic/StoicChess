@@ -33,9 +33,10 @@
   color: white;
 }
 .navbar-inverse {
-  background-color: #979A9C;
-  border: none;
-  box-shadow: 3px 3px 3px;
+  background-image: url('/assets/chess.jpg');
+  background-position: center;
+  background-size: auto;
+  border-radius: 0;
 }
 
 .navbar-header .navbar-brand {

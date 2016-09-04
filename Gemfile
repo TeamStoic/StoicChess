@@ -4,19 +4,22 @@ gem 'rails_12factor', group: :production
 gem 'simple_form'
 gem 'devise'
 gem 'bootstrap-sass'
-gem 'coveralls', require: false
 gem 'jquery-ui-rails'
+gem 'slim-rails'
+gem 'puma'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.0'
-gem 'rubocop', '~> 0.41.2', require: false
+gem 'rails'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.0'
-  gem 'factory_girl_rails', '~> 4.0'
-  gem 'rspec-core'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
   gem 'capybara'
+end
+
+group :development do
   gem 'pry-rails'
+  gem 'rubocop', require: false
 end
 
 # Use postgresql as the database for Active Record

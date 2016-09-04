@@ -3,6 +3,7 @@ StoicChess::Application.routes.draw do
   root 'static_pages#index'
 
   resources :games
+  patch 'games/:id', to: 'games#join', as: :join_game
   resources :users, only: [:show]
 
 

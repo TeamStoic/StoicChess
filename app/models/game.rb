@@ -5,7 +5,7 @@ class Game < ActiveRecord::Base
   has_many :pieces
   has_many :players
   has_many :users, through: :players
-  after_save :create_players!
+  after_save :create_players!, :populate!
 
   def populate!
     populate_left_black_half!
@@ -16,49 +16,58 @@ class Game < ActiveRecord::Base
     populate_right_white_half!
   end
 
-  # Returns true if the King of the color that
-  # just moved is in check
-  def in_check?(color)
-    king = pieces.find_by(type: 'King', color: color)
-    enemy_pcs(color).each do |p|
-      return true if p.valid_move?(king.x_position, king.y_position)
-    end
-    false
-  end
-
-  # selects enemy pieces that are not captured
-  def enemy_pcs(color)
-    pieces.select { |p| p.color != color && p.captured != true }
-  end
-
-  # Returns an array of all coordinates around the king,
-  # including his current position and makes sure that
-  # they exist on the board.
-  def checkmate_coords(x, y)
-    coords_around_cell(x, y).select! do |i|
-      i[0] <= x + 1 && i[1] >= y - 1 && exist?(i[0], i[1])
-    end
-  end
-
-  private
-
-  # Generates all avilable coords around the current
-  # coords, including the current ones
-  def coords_around_cell(x, y)
-    coords = [x, y, (x + 1), (x - 1), (y + 1), (y - 1)]
-    coords.uniq!.repeated_permutation(2).to_a
-    coords
-  end
-
-  # returns true if cell exists or not
-  def exist?(x, y)
-    (x <= 7 && x >= 0) && (y <= 7 && y >= 0)
-  end
-
   def create_players!
     players.create(color: 'white')
     players.create(color: 'black')
   end
+
+  def generate_tiles
+    tiles = []
+    (0..7).each do |x|
+      (0..7).each do |y|
+        tiles << [x, y]
+      end
+    end
+    tiles
+  end
+
+  def next_turn
+    if current_player.enemy.king.in_check?
+      current_player.enemy.king.in_checkmate? ? game_over! : check!
+    end
+    incremented_turn = turn + 1
+    update(turn: incremented_turn)
+  end
+
+  def game_over!
+    update(active: false)
+  end
+
+  def check!
+  end
+
+  def current_player
+    turn.odd? ? white : black
+  end
+
+  def white
+    players.find_by(color: 'white')
+  end
+
+  def black
+    players.find_by(color: 'black')
+  end
+
+  # Returns the piece occupying the coordinates.
+  def tile_occupant(x, y)
+    pieces.find_by(x_position: x, y_position: y)
+  end
+
+  def tile_occupied?(x, y)
+    pieces.exists?(x_position: x, y_position: y)
+  end
+
+  private
 
   def populate_left_black_half!
     create_piece('Rook', 'black', 0, 0)
@@ -100,20 +109,12 @@ class Game < ActiveRecord::Base
     create_piece('Rook', 'white', 7, 7)
   end
 
-  def white
-    players.find_by(color: 'white')
-  end
-
-  def black
-    players.find_by(color: 'black')
-  end
-
-  def create_piece(type, color, x_pos, y_pos)
+  def create_piece(type, color, x, y)
     if color == 'white'
-      white.pieces.create(type: type, x_position: x_pos, y_position: y_pos,
+      white.pieces.create(type: type, x_position: x, y_position: y,
                           color: 'white', game_id: id)
     else
-      black.pieces.create(type: type, x_position: x_pos, y_position: y_pos,
+      black.pieces.create(type: type, x_position: x, y_position: y,
                           color: 'black', game_id: id)
     end
   end

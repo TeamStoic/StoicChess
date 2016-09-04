@@ -1,0 +1,37 @@
+.container-fluid
+  section#games-list
+    | Your opponent awaits you! Join the battle!
+          - @games.each do |game|
+            h4 Available Game
+            = button_to 'Join Game', join_game_path(game), class: 'btn btn-success pull-right'
+  section#profile
+    .row 
+      br
+      .col-sm-offset-2.col-sm-1
+        |  <a class="btn btn-info dash-button" href="
+        = user_path(current_user)
+        | " role="button">User Dashboard
+      .col-sm-offset-2.col-sm-2
+        = button_to "Create Game", games_path, method: :post, class: "center-block btn btn-success btn-lg dash-button"
+      .col-sm-offset-2.col-sm-1
+        a.btn.btn-info[href="#" role="button"]
+          | Account Settings
+    br.clr
+  .row
+    .stats.col-sm-offset-2.col-sm-2
+      h2.text-center
+        = current_user.username
+      = image_tag 'yoda.jpg', class: 'img-responsive'
+    .stats.col-sm-offset-1.col-sm-5
+      h2.text-center
+        | Quick Stats
+      .boxed
+        h4.top
+          | Games Played: 
+          = current_user.games.count
+        h4
+          | Wins:
+        h4
+          | Losses:
+        h4
+          | Draws:

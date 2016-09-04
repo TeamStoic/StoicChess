@@ -1,24 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Pawn, type: :model do
-  let(:game) { FactoryGirl.create(:game, :populated) }
-  let(:pawn) do
-    game.pieces.find_by(
-      type: 'Pawn',
-      color: 'white',
-      x_position: 5,
-      y_position: 6
-    )
-  end
-  let(:moved_pawn) do
-    game.pieces.create(
-      type: 'Pawn',
-      color: 'white',
-      x_position: 3,
-      y_position: 4,
-      moved: true
-    )
-  end
+  let(:test_game) { FactoryGirl.create(:game) }
+  let(:pawn) { test_game.white.pawns.find_by(x_position: 5) }
 
   describe 'creation' do
     it 'should create a white pawn' do
@@ -43,33 +27,37 @@ RSpec.describe Pawn, type: :model do
 
   describe 'invalid moveset' do
     it 'should return false and not update position on invalid move' do
-      expect(moved_pawn.move!(3, 2)).to eq false
-      expect(moved_pawn.x_position).to eq 3
-      expect(moved_pawn.y_position).to eq 4
-      expect(moved_pawn.moved).to eq true
+      pawn.update(x_position: 3, y_position: 4, moved: true)
+      expect(pawn.move!(3, 2)).to eq false
+      expect(pawn.x_position).to eq 3
+      expect(pawn.y_position).to eq 4
+      expect(pawn.moved).to eq true
     end
 
     it 'should return false and not update position on invalid move' do
-      expect(moved_pawn.move!(2, 3)).to eq false
-      expect(moved_pawn.x_position).to eq 3
-      expect(moved_pawn.y_position).to eq 4
-      expect(moved_pawn.moved).to eq true
+      pawn.update(x_position: 3, y_position: 4, moved: true)
+      expect(pawn.move!(2, 3)).to eq false
+      expect(pawn.x_position).to eq 3
+      expect(pawn.y_position).to eq 4
+      expect(pawn.moved).to eq true
     end
 
     it 'should return false and not update position on invalid move' do
-      expect(moved_pawn.move!(3, 5)).to eq false
-      expect(moved_pawn.x_position).to eq 3
-      expect(moved_pawn.y_position).to eq 4
-      expect(moved_pawn.moved).to eq true
+      pawn.update(x_position: 3, y_position: 4, moved: true)
+      expect(pawn.move!(3, 5)).to eq false
+      expect(pawn.x_position).to eq 3
+      expect(pawn.y_position).to eq 4
+      expect(pawn.moved).to eq true
     end
   end
 
   describe 'non-obstructed move' do
     it 'should return true and update position on non-obstructed move' do
-      expect(moved_pawn.move!(3, 3)).to eq true
-      expect(moved_pawn.x_position).to eq 3
-      expect(moved_pawn.y_position).to eq 3
-      expect(moved_pawn.moved).to eq true
+      pawn.update(x_position: 3, y_position: 4, moved: true)
+      expect(pawn.move!(3, 3)).to eq true
+      expect(pawn.x_position).to eq 3
+      expect(pawn.y_position).to eq 3
+      expect(pawn.moved).to eq true
     end
 
     it 'should return true and update position on non-obstructed move' do
@@ -89,7 +77,7 @@ RSpec.describe Pawn, type: :model do
 
   describe 'obstructed move' do
     it 'should return false and not update position on obstructed move' do
-      game.pieces.create(
+      test_game.pieces.create(
         type: 'Rook',
         color: 'white',
         x_position: 5,
@@ -102,7 +90,7 @@ RSpec.describe Pawn, type: :model do
     end
 
     it 'should return false and not update position on obstructed move' do
-      game.pieces.create(
+      test_game.pieces.create(
         type: 'Rook',
         color: 'white',
         x_position: 5,
@@ -117,16 +105,17 @@ RSpec.describe Pawn, type: :model do
 
   describe 'diagonal capture' do
     it 'should return false and not update position on capturing friendly' do
-      victim = game.pieces.create(
+      victim = test_game.white.pieces.create(
         type: 'Rook',
         color: 'white',
         x_position: 2,
         y_position: 3
       )
-      expect(moved_pawn.move!(2, 3)).to eq false
-      expect(moved_pawn.x_position).to eq 3
-      expect(moved_pawn.y_position).to eq 4
-      expect(moved_pawn.moved).to eq true
+      pawn.update(x_position: 3, y_position: 4, moved: true)
+      expect(pawn.move!(2, 3)).to eq false
+      expect(pawn.x_position).to eq 3
+      expect(pawn.y_position).to eq 4
+      expect(pawn.moved).to eq true
       victim.reload
       expect(victim.x_position).to eq 2
       expect(victim.y_position).to eq 3
@@ -134,16 +123,18 @@ RSpec.describe Pawn, type: :model do
     end
 
     it 'should return true and update position on capturing enemy' do
-      victim = game.pieces.create(
+      victim = test_game.black.pieces.create(
         type: 'Rook',
         color: 'black',
         x_position: 2,
-        y_position: 3
+        y_position: 3,
+        game_id: test_game.id
       )
-      expect(moved_pawn.move!(2, 3)).to eq true
-      expect(moved_pawn.x_position).to eq 2
-      expect(moved_pawn.y_position).to eq 3
-      expect(moved_pawn.moved).to eq true
+      pawn.update(x_position: 3, y_position: 4, moved: true)
+      expect(pawn.move!(2, 3)).to eq true
+      expect(pawn.x_position).to eq 2
+      expect(pawn.y_position).to eq 3
+      expect(pawn.moved).to eq true
       victim.reload
       expect(victim.x_position).to eq nil
       expect(victim.y_position).to eq nil
@@ -151,10 +142,11 @@ RSpec.describe Pawn, type: :model do
     end
 
     it 'should return false when moving but not capturing diagonally' do
-      expect(moved_pawn.move!(4, 3)).to eq false
-      expect(moved_pawn.x_position).to eq 3
-      expect(moved_pawn.y_position).to eq 4
-      expect(moved_pawn.moved).to eq true
+      pawn.update(x_position: 3, y_position: 4, moved: true)
+      expect(pawn.move!(4, 3)).to eq false
+      expect(pawn.x_position).to eq 3
+      expect(pawn.y_position).to eq 4
+      expect(pawn.moved).to eq true
     end
   end
 end
