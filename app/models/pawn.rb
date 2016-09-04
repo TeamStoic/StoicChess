@@ -24,9 +24,9 @@ class Pawn < Piece
   # from the piece's origin and no capture occured.
   def one_fwd_move?(x, y)
     if color == 'black'
-      x_distance(x) == 0 && y == y_position + 1
+      x_distance(x).zero? && y == y_position + 1
     else
-      x_distance(x) == 0 && y == y_position - 1
+      x_distance(x).zero? && y == y_position - 1
     end
   end
 
@@ -34,9 +34,9 @@ class Pawn < Piece
   # from the piece's origin and no capture occurred.
   def clear_two_fwd_move?(x, y)
     if color == 'black'
-      x_distance(x) == 0 && y == y_position + 2 && path_clear?(x, y, 2)
+      x_distance(x).zero? && y == y_position + 2 && path_clear?(x, y, 2)
     else
-      x_distance(x) == 0 && y == y_position - 2 && path_clear?(x, y, 2)
+      x_distance(x).zero? && y == y_position - 2 && path_clear?(x, y, 2)
     end
   end
 

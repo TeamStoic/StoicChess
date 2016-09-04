@@ -91,7 +91,7 @@ class Piece < ActiveRecord::Base
   # Returns true if the coordinates provided have the
   # same x-axis value and there are no pieces in between.
   def clear_horizontal_move?(x, y)
-    return false unless y_distance(y) == 0
+    return false unless y_distance(y).zero?
     distance = x_distance(x)
     path_clear?(x, y, distance)
   end
@@ -99,7 +99,7 @@ class Piece < ActiveRecord::Base
   # Returns true if the coordinates provided have
   # the same y-axis value and there are no pieces in between.
   def clear_vertical_move?(x, y)
-    return false unless x_distance(x) == 0
+    return false unless x_distance(x).zero?
     distance = y_distance(y)
     path_clear?(x, y, distance)
   end
