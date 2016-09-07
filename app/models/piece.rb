@@ -1,71 +1,56 @@
-# Piece superset behavior.
+# All validation assumes white player is on the
+# 6-7 rows of the array, and black player is on
+# 0-1 rows of the array.
 class Piece < ActiveRecord::Base
   belongs_to :game
   belongs_to :player
   validates :color, inclusion: { in: %w(black white) }
   validates :type, inclusion: { in: %w(Pawn Rook Bishop Knight King Queen) }
 
-  # Class constants used to determine path direction
-  # for obstruction logic.
-  RIGHT = 1
-  LEFT = -1
-  DOWN = 1
-  UP = -1
   # Returns true and upates the piece's coordinates and moved
   # flag on a valid move where the tile is either empty or
   # occupied by an enemy piece.  Executes capture method
   # on enemy occupying piece.  Otherwise returns false
   # and no further changes are made.
   def move!(x, y)
-    return false unless valid_move?(x, y)
-    victim = occupant_piece(x, y)
-    if victim
-      return false unless enemy?(victim)
-      capture!(victim)
-    end
-    return false if check_state(x, y, color)
+    return false unless valid_move?(x, y) && !king_exposed?(x, y)
+    select_castling_rook(x).castle! if type == 'King' &&
+                                       clear_castling_move?(x, y)
+    capture!(x, y)
     update(x_position: x, y_position: y, moved: true)
-    true
+    game.next_turn
   end
 
-  def checkmate?(x, y, color)
-    if game.checkmate_coords(x, y).all? do |c|
-         check_state(c[0], c[1], color)
-       end
-      return true
+  def generate_valid_moves
+    game.generate_tiles.select do |tile|
+      valid_move?(tile[0], tile[1]) && !king_exposed?(tile[0], tile[1])
     end
-    false
-  end
-
-  def check_state(x, y, color)
-    old_x = x_position
-    old_y = y_position
-    update(x_position: x, y_position: y)
-    result = game.in_check?(color)
-    update(x_position: old_x, y_position: old_y)
-    result
-  end
-
-  # All validation assumes white player is on the
-  # 6-7 rows of the array, and black player is on
-  # 0-1 rows of the array.
-
-  # Returns true if position is occupied by a hostile piece.
-  def enemy?(victim)
-    color != victim.color
   end
 
   private
 
   # Updates a victim piece to nil coordinates and sets
   # captured flag to true.
-  def capture!(victim)
-    victim.update(x_position: nil, y_position: nil, captured: true)
+  def capture!(x, y)
+    victim = game.tile_occupant(x, y)
+    victim.update(x_position: nil, y_position: nil, captured: true) if victim
   end
 
-  # Returns the piece occupying the coordinates.
-  def occupant_piece(x, y)
-    game.pieces.find_by(x_position: x, y_position: y)
+  def capturable?(x, y)
+    player.enemy.pieces.exists?(x_position: x, y_position: y)
+  end
+
+  def tile_empty_or_capturable?(x, y)
+    !game.tile_occupied?(x, y) || capturable?(x, y)
+  end
+
+  def king_exposed?(x, y)
+    original_x = x_position
+    original_y = y_position
+    update(x_position: x, y_position: y)
+    exposed = player.king.in_check?
+    update(x_position: original_x, y_position: original_y)
+    exposed
   end
 
   # Compares a piece's x_position with the
@@ -84,14 +69,14 @@ class Piece < ActiveRecord::Base
 
   # Returns true if the coordinates provided
   # are different from the piece's starting position.
-  def moved?(x, y)
+  def moved_from_origin?(x, y)
     x != x_position || y != y_position
   end
 
   # Returns true if the coordinates provided have the
   # same x-axis value and there are no pieces in between.
   def clear_horizontal_move?(x, y)
-    return false unless y_distance(y).zero?
+    return false unless moved_from_origin?(x, y) && y_distance(y).zero?
     distance = x_distance(x)
     path_clear?(x, y, distance)
   end
@@ -99,7 +84,7 @@ class Piece < ActiveRecord::Base
   # Returns true if the coordinates provided have
   # the same y-axis value and there are no pieces in between.
   def clear_vertical_move?(x, y)
-    return false unless x_distance(x).zero?
+    return false unless moved_from_origin?(x, y) && x_distance(x).zero?
     distance = y_distance(y)
     path_clear?(x, y, distance)
   end
@@ -108,7 +93,8 @@ class Piece < ActiveRecord::Base
   # are the same distance away from the origin point along
   # both axis and there are no pieces in between.
   def clear_diagonal_move?(x, y)
-    return false unless x_distance(x) == y_distance(y)
+    return false unless moved_from_origin?(x, y) &&
+                        x_distance(x) == y_distance(y)
     distance = x_distance(x)
     path_clear?(x, y, distance)
   end
@@ -119,12 +105,12 @@ class Piece < ActiveRecord::Base
   # to determine direction of path along both axis.
   def path_direction(x, y)
     direction = {}
-    direction[:x] = if x_position < x then RIGHT
-                    elsif x_position > x then LEFT
+    direction[:x] = if x_position < x then 1
+                    elsif x_position > x then -1
                     else 0
                     end
-    direction[:y] = if y_position < y then DOWN
-                    elsif y_position > y then UP
+    direction[:y] = if y_position < y then 1
+                    elsif y_position > y then -1
                     else 0
                     end
     direction
@@ -132,24 +118,28 @@ class Piece < ActiveRecord::Base
 
   # Returns an array of x-y coordinate subarrays
   # between origin and destination.
-  def generate_path_coordinates(x, y, distance)
-    coordinate_sets = []
+  def generate_path(x, y, distance)
+    path = []
     direction = path_direction(x, y)
     (distance - 1).times do |i|
       i += 1
-      coordinate_sets << [x_position + i * direction[:x],
-                          y_position + i * direction[:y]]
+      path << [
+        x_position + i * direction[:x],
+        y_position + i * direction[:y]
+      ]
     end
-    coordinate_sets
+    path
   end
 
   # Returns true if no x-y coordinate pairs between
   # origin and destination have a piece present.
   def path_clear?(x, y, distance)
-    coordinates = generate_path_coordinates(x, y, distance)
-    coordinates.each do |coord|
-      return false if game.pieces.exists?(x_position: coord[0],\
-                                          y_position: coord[1])
+    path = generate_path(x, y, distance)
+    path.each do |tile|
+      return false if game.pieces.exists?(
+        x_position: tile[0],
+        y_position: tile[1]
+      )
     end
     true
   end

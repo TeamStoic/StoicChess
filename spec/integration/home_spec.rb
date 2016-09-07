@@ -7,7 +7,7 @@ Warden.test_mode!
 describe 'home page' do
   it 'should welcome the user' do
     visit '/'
-    expect(page).to have_content('StoicChess')
+    expect(page).to have_content('RPGChess')
   end
 end
 

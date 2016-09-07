@@ -1,0 +1,41 @@
+#scoreboard
+  .text-center.players
+    h2
+      = @game.white.user ? @game.white.user.username : "Available" 
+      |  vs. 
+      = @game.black.user ? @game.black.user.username : "Available"
+    h2 
+      = "Turn: "
+      span#turn 
+        = @game.turn
+      span#player-turn
+        = " (#{@game.current_player.color.capitalize})"
+hr
+
+.container
+  .row
+    #chess
+      .white-graveyard
+        - @game.white.pieces.where(captured: true).each do |captured_piece|
+          - if captured_piece.type == 'Rook'
+            span class='piece captured-piece white glyphicon glyphicon-tower' 
+          - else
+            span class='piece captured-piece white glyphicon glyphicon-#{captured_piece.type.downcase}'
+      table#chess-board data-id='#{@game.id}' data-turn='#{@game.turn}' data-player='#{@player.color}'
+        - 8.times do |y|
+          tr
+            - 8.times do |x|
+              | <td data-x='#{x}' data-y='#{y}'>
+              - piece = @game.pieces.find_by(x_position: x, y_position: y)
+              - if piece
+                - if piece.type == 'Rook'
+                  span class='piece #{piece.color.downcase} glyphicon glyphicon-tower' data-id='#{piece.id}' 
+                - else
+                  span class='piece #{piece.color.downcase} glyphicon glyphicon-#{piece.type.downcase}' data-id='#{piece.id}'     
+              | </td>
+      .black-graveyard
+        - @game.black.pieces.where(captured: true).each do |captured_piece|
+          - if captured_piece.type == 'Rook'
+              span class='piece captured-piece black glyphicon glyphicon-tower' 
+          - else
+              span class='piece captured-piece black glyphicon glyphicon-#{captured_piece.type.downcase}'  

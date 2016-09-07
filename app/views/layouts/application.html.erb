@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>StoicChess</title>
+    <title>RPGChess</title>
     <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
     <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>
@@ -10,7 +10,9 @@
   <body class="site">
     <main class="site-content">
       <%= render "layouts/navbar" %>
-      <%= yield %>
+      <div id='window'>
+        <%= yield %>
+      </div>
     </main>
       <%= render "layouts/footer" %>
   </body>

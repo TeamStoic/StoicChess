@@ -1,24 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Queen, type: :model do
-  let(:game) { FactoryGirl.create(:game, :populated) }
-  let(:queen) do
-    game.pieces.find_by(
-      type: 'Queen',
-      color: 'white',
-      x_position: 3,
-      y_position: 7
-    )
-  end
-  let(:moved_queen) do
-    game.pieces.create(
-      type: 'Queen',
-      color: 'white',
-      x_position: 3,
-      y_position: 3,
-      moved: true
-    )
-  end
+  let(:test_game) { FactoryGirl.create(:game) }
+  let(:queen) { test_game.white.queen }
 
   describe 'creation' do
     it 'should create a white queen' do
@@ -43,61 +27,69 @@ RSpec.describe Queen, type: :model do
 
   describe 'invalid moveset' do
     it 'should return false and not update position on invalid move' do
-      expect(moved_queen.move!(4, 5)).to eq false
-      expect(moved_queen.x_position).to eq 3
-      expect(moved_queen.y_position).to eq 3
-      expect(moved_queen.moved).to eq true
+      queen.update(x_position: 3, y_position: 3, moved: true)
+      expect(queen.move!(4, 5)).to eq false
+      expect(queen.x_position).to eq 3
+      expect(queen.y_position).to eq 3
+      expect(queen.moved).to eq true
     end
 
     it 'should return false and not update position on invalid move' do
-      expect(moved_queen.move!(7, 4)).to eq false
-      expect(moved_queen.x_position).to eq 3
-      expect(moved_queen.y_position).to eq 3
-      expect(moved_queen.moved).to eq true
+      queen.update(x_position: 3, y_position: 3, moved: true)
+      expect(queen.move!(7, 4)).to eq false
+      expect(queen.x_position).to eq 3
+      expect(queen.y_position).to eq 3
+      expect(queen.moved).to eq true
     end
 
     it 'should return false and not update position on invalid move' do
-      expect(moved_queen.move!(1, 2)).to eq false
-      expect(moved_queen.x_position).to eq 3
-      expect(moved_queen.y_position).to eq 3
-      expect(moved_queen.moved).to eq true
+      queen.update(x_position: 3, y_position: 3, moved: true)
+      expect(queen.move!(1, 2)).to eq false
+      expect(queen.x_position).to eq 3
+      expect(queen.y_position).to eq 3
+      expect(queen.moved).to eq true
     end
   end
 
   describe 'non-obstructed move' do
     it 'should return true and update position on non-obstructed move' do
-      expect(moved_queen.move!(7, 3)).to eq true
-      expect(moved_queen.x_position).to eq 7
-      expect(moved_queen.y_position).to eq 3
-      expect(moved_queen.moved).to eq true
+      queen.update(x_position: 3, y_position: 3, moved: true)
+      expect(queen.move!(7, 3)).to eq true
+      expect(queen.x_position).to eq 7
+      expect(queen.y_position).to eq 3
+      expect(queen.moved).to eq true
     end
 
     it 'should return true and update position on non-obstructed move' do
-      expect(moved_queen.move!(3, 2)).to eq true
-      expect(moved_queen.x_position).to eq 3
-      expect(moved_queen.y_position).to eq 2
-      expect(moved_queen.moved).to eq true
+      queen.update(x_position: 3, y_position: 3, moved: true)
+      expect(queen.move!(3, 2)).to eq true
+      expect(queen.x_position).to eq 3
+      expect(queen.y_position).to eq 2
+      expect(queen.moved).to eq true
     end
 
     it 'should return true and update position on non-obstructed move' do
-      expect(moved_queen.move!(5, 5)).to eq true
-      expect(moved_queen.x_position).to eq 5
-      expect(moved_queen.y_position).to eq 5
-      expect(moved_queen.moved).to eq true
+      queen.update(x_position: 3, y_position: 3, moved: true)
+      expect(queen.move!(5, 5)).to eq true
+      expect(queen.x_position).to eq 5
+      expect(queen.y_position).to eq 5
+      expect(queen.moved).to eq true
     end
 
     it 'should return true and update position on non-obstructed move' do
-      expect(moved_queen.move!(4, 2)).to eq true
-      expect(moved_queen.x_position).to eq 4
-      expect(moved_queen.y_position).to eq 2
-      expect(moved_queen.moved).to eq true
+      queen.update(x_position: 3, y_position: 3, moved: true)
+      expect(queen.move!(4, 2)).to eq true
+      expect(queen.x_position).to eq 4
+      expect(queen.y_position).to eq 2
+      expect(queen.moved).to eq true
     end
 
     it 'should return true and update position on non-obstructed move' do
-      expect(moved_queen.move!(0, 3)).to eq true
-      expect(moved_queen.x_position).to eq 0
-      expect(moved_queen.y_position).to eq 3
-      expect(moved_queen.moved).to eq true
+      queen.update(x_position: 3, y_position: 3, moved: true)
+      expect(queen.move!(0, 3)).to eq true
+      expect(queen.x_position).to eq 0
+      expect(queen.y_position).to eq 3
+      expect(queen.moved).to eq true
     end
   end
 
@@ -117,10 +109,11 @@ RSpec.describe Queen, type: :model do
     end
 
     it 'should return false and not update position on obstructed move' do
-      expect(moved_queen.move!(0, 0)).to eq false
-      expect(moved_queen.x_position).to eq 3
-      expect(moved_queen.y_position).to eq 3
-      expect(moved_queen.moved).to eq true
+      queen.update(x_position: 3, y_position: 3, moved: true)
+      expect(queen.move!(0, 0)).to eq false
+      expect(queen.x_position).to eq 3
+      expect(queen.y_position).to eq 3
+      expect(queen.moved).to eq true
     end
   end
 end

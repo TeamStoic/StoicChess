@@ -6,8 +6,9 @@ class Pawn < Piece
   # takes place by moving forward. Check, and checkmate logic
   # are not implemented yet and thus ignored.
   def valid_move?(x, y)
-    return true if fwd_diagonal_attack?(x, y)
-    moved ? one_fwd_move?(x, y) : first_fwd_move?(x, y) && !fwd_attack?(x, y)
+    return true if diagonal_attack?(x, y)
+    return false if game.tile_occupied?(x, y)
+    moved ? forward_march?(x, y) : first_move_march?(x, y)
   end
 
   # Updates the piece's type from Pawn to the new type
@@ -22,7 +23,7 @@ class Pawn < Piece
 
   # Returns true if the coordinates provided are 1 tile forward
   # from the piece's origin and no capture occured.
-  def one_fwd_move?(x, y)
+  def forward_march?(x, y)
     if color == 'black'
       x_distance(x).zero? && y == y_position + 1
     else
@@ -32,7 +33,7 @@ class Pawn < Piece
 
   # Returns true if coordinates provided are 2 tiles forward
   # from the piece's origin and no capture occurred.
-  def clear_two_fwd_move?(x, y)
+  def clear_two_forward_march?(x, y)
     if color == 'black'
       x_distance(x).zero? && y == y_position + 2 && path_clear?(x, y, 2)
     else
@@ -42,25 +43,21 @@ class Pawn < Piece
 
   # Returns true if the coordinates provided
   # are 1-2 tiles forward from the piece's origin.
-  def first_fwd_move?(x, y)
-    one_fwd_move?(x, y) || clear_two_fwd_move?(x, y)
-  end
-
-  # Returns true if a piece exists in pawn's forward path.
-  def fwd_attack?(x, y)
-    game.pieces.exists?(x_position: x, y_position: y)
+  def first_move_march?(x, y)
+    forward_march?(x, y) || clear_two_forward_march?(x, y)
   end
 
   # Returns true if pawn is moving into an enemy-occupied tile
   # that is one space diagonally forward to the left or right
   # of the pawn's starting position.
-  def fwd_diagonal_attack?(x, y)
-    return false unless occupant_piece(x, y)
-    return false unless x == x_position + 1 || x == x_position - 1
-    y == if color == 'black'
-           y_position + 1
-         else
-           y_position - 1
-         end
+  def diagonal_attack?(x, y)
+    return false unless capturable?(x, y)
+    x_check = (x == x_position + 1 || x == x_position - 1)
+    y_check = y == if color == 'black'
+                     y_position + 1
+                   else
+                     y_position - 1
+                   end
+    x_check && y_check
   end
 end

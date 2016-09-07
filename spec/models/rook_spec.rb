@@ -1,24 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Rook, type: :model do
-  let(:game) { FactoryGirl.create(:game, :populated) }
-  let(:rook) do
-    game.pieces.find_by(
-      type: 'Rook',
-      color: 'white',
-      x_position: 7,
-      y_position: 7
-    )
-  end
-  let(:moved_rook) do
-    game.pieces.create(
-      type: 'Rook',
-      color: 'white',
-      x_position: 3,
-      y_position: 3,
-      moved: true
-    )
-  end
+  let(:test_game) { FactoryGirl.create(:game) }
+  let(:rook) { test_game.white.rooks.last }
 
   describe 'creation' do
     it 'should create a white rook' do
@@ -43,61 +27,69 @@ RSpec.describe Rook, type: :model do
 
   describe 'invalid moveset' do
     it 'should return false and not update position on invalid move' do
-      expect(moved_rook.move!(4, 4)).to eq false
-      expect(moved_rook.x_position).to eq 3
-      expect(moved_rook.y_position).to eq 3
-      expect(moved_rook.moved).to eq true
+      rook.update(x_position: 3, y_position: 3, moved: true)
+      expect(rook.move!(4, 4)).to eq false
+      expect(rook.x_position).to eq 3
+      expect(rook.y_position).to eq 3
+      expect(rook.moved).to eq true
     end
 
     it 'should return false and not update position on invalid move' do
-      expect(moved_rook.move!(5, 4)).to eq false
-      expect(moved_rook.x_position).to eq 3
-      expect(moved_rook.y_position).to eq 3
-      expect(moved_rook.moved).to eq true
+      rook.update(x_position: 3, y_position: 3, moved: true)
+      expect(rook.move!(5, 4)).to eq false
+      expect(rook.x_position).to eq 3
+      expect(rook.y_position).to eq 3
+      expect(rook.moved).to eq true
     end
 
     it 'should return false and not update position on invalid move' do
-      expect(moved_rook.move!(6, 2)).to eq false
-      expect(moved_rook.x_position).to eq 3
-      expect(moved_rook.y_position).to eq 3
-      expect(moved_rook.moved).to eq true
+      rook.update(x_position: 3, y_position: 3, moved: true)
+      expect(rook.move!(6, 2)).to eq false
+      expect(rook.x_position).to eq 3
+      expect(rook.y_position).to eq 3
+      expect(rook.moved).to eq true
     end
   end
 
   describe 'non-obstructed move' do
     it 'should return true and update position on non-obstructed move' do
-      expect(moved_rook.move!(7, 3)).to eq true
-      expect(moved_rook.x_position).to eq 7
-      expect(moved_rook.y_position).to eq 3
-      expect(moved_rook.moved).to eq true
+      rook.update(x_position: 3, y_position: 3, moved: true)
+      expect(rook.move!(7, 3)).to eq true
+      expect(rook.x_position).to eq 7
+      expect(rook.y_position).to eq 3
+      expect(rook.moved).to eq true
     end
 
     it 'should return true and update position on non-obstructed move' do
-      expect(moved_rook.move!(3, 2)).to eq true
-      expect(moved_rook.x_position).to eq 3
-      expect(moved_rook.y_position).to eq 2
-      expect(moved_rook.moved).to eq true
+      rook.update(x_position: 3, y_position: 3, moved: true)
+      expect(rook.move!(3, 2)).to eq true
+      expect(rook.x_position).to eq 3
+      expect(rook.y_position).to eq 2
+      expect(rook.moved).to eq true
     end
 
     it 'should return true and update position on non-obstructed move' do
-      expect(moved_rook.move!(0, 3)).to eq true
-      expect(moved_rook.x_position).to eq 0
-      expect(moved_rook.y_position).to eq 3
-      expect(moved_rook.moved).to eq true
+      rook.update(x_position: 3, y_position: 3, moved: true)
+      expect(rook.move!(0, 3)).to eq true
+      expect(rook.x_position).to eq 0
+      expect(rook.y_position).to eq 3
+      expect(rook.moved).to eq true
     end
 
     it 'should return true and update position on non-obstructed move' do
-      expect(moved_rook.move!(3, 5)).to eq true
-      expect(moved_rook.x_position).to eq 3
-      expect(moved_rook.y_position).to eq 5
-      expect(moved_rook.moved).to eq true
+      rook.update(x_position: 3, y_position: 3, moved: true)
+      expect(rook.move!(3, 5)).to eq true
+      expect(rook.x_position).to eq 3
+      expect(rook.y_position).to eq 5
+      expect(rook.moved).to eq true
     end
 
     it 'should return true and update position on non-obstructed move' do
-      expect(moved_rook.move!(2, 3)).to eq true
-      expect(moved_rook.x_position).to eq 2
-      expect(moved_rook.y_position).to eq 3
-      expect(moved_rook.moved).to eq true
+      rook.update(x_position: 3, y_position: 3, moved: true)
+      expect(rook.move!(2, 3)).to eq true
+      expect(rook.x_position).to eq 2
+      expect(rook.y_position).to eq 3
+      expect(rook.moved).to eq true
     end
   end
 
@@ -117,17 +109,19 @@ RSpec.describe Rook, type: :model do
     end
 
     it 'should return false and not update position on obstructed move' do
-      expect(moved_rook.move!(3, 7)).to eq false
-      expect(moved_rook.x_position).to eq 3
-      expect(moved_rook.y_position).to eq 3
-      expect(moved_rook.moved).to eq true
+      rook.update(x_position: 3, y_position: 3, moved: true)
+      expect(rook.move!(3, 7)).to eq false
+      expect(rook.x_position).to eq 3
+      expect(rook.y_position).to eq 3
+      expect(rook.moved).to eq true
     end
 
     it 'should return false and not update position on obstructed move' do
-      expect(moved_rook.move!(3, 0)).to eq false
-      expect(moved_rook.x_position).to eq 3
-      expect(moved_rook.y_position).to eq 3
-      expect(moved_rook.moved).to eq true
+      rook.update(x_position: 3, y_position: 3, moved: true)
+      expect(rook.move!(3, 0)).to eq false
+      expect(rook.x_position).to eq 3
+      expect(rook.y_position).to eq 3
+      expect(rook.moved).to eq true
     end
   end
 end

@@ -2,7 +2,11 @@ StoicChess::Application.routes.draw do
   devise_for :users
   root 'static_pages#index'
 
-  resources :games
+  resources :games, only: [:create, :index, :show]
+  patch 'games/:id/join', to: 'games#join', as: :join_game
+  patch 'pieces/:id', to: 'pieces#move'
+  get 'pieces/:id/', to: 'pieces#valid_moves'
+  get 'games/:id/refresh', to: 'pieces#refresh'
   resources :users, only: [:show]
 
 

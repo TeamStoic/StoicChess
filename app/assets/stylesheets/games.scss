@@ -5,33 +5,33 @@
 #chess-board {
   border: 7px solid #000;
   border-collapse: separate;
-  padding: 1px;
-  width: 550px;
-  height: 550px;
+  margin: auto;
+  table-layout: fixed;
 }
 
 #chess-board td {
   @include cell-gradient(#fff, #eee);
   @include shadow-box(1px, #fff);
-  font-size: 35px;
+  width: 90px;
+  height: 90px;
+  text-align: center;
 }
 
 .players h2 {
   word-spacing: 10px;
 }
 
-#chess-board i {
+.piece {
+  font-size: 45px;
   text-shadow: 3px 3px 8px #444;
 }
 
-.white-pcs {
-  color: #fff;
+.white {
+  color: white;
 }
 
-/* makes the baord centered at all times*/
-.col-centered {
-  float: none;
-  margin: auto;
+.black {
+  color: black;
 }
 
 #chess-board tr:nth-child(odd) td:nth-child(even),
@@ -43,14 +43,16 @@
 }
 
 /* have to use a class here to override box shadow settings above */
-.container #chess-board tr td:hover {
-  box-shadow: inset 0 0 12px rgba(166,34,25, 0.6);
-  -moz-box-shadow: inset 0 0 12px rgba(166,34,25, 0.6);
-  -webkit-box-shadow: inset 0 0 12px rgba(166,34,25, 0.6);
+#chess-board td:hover {
+  border: 3px solid cyan;
 }
 
-.highlighted-cell {
-  border: 3px solid rgba(63,166,41, 0.6);
+.selected-tile {
+  border: 3px solid rgb(63,166,41);
+}
+
+.valid-move-tile {
+  border: 3px solid purple;
 }
 
 #games-list {
